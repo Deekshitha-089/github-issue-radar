@@ -166,3 +166,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+send_telegram_message("🚀 GitHub Issue Radar test alert! Telegram is working.")
