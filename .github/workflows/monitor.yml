@@ -22,14 +22,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Test Telegram notification
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          python -c "import os; print('Token configured:', bool(os.getenv('TELEGRAM_BOT_TOKEN'))); print('Chat ID configured:', bool(os.getenv('TELEGRAM_CHAT_ID')))"
-          python -c "import os; from urllib.request import Request, urlopen; from urllib.parse import urlencode; url='https://api.telegram.org/bot'+os.environ['TELEGRAM_BOT_TOKEN']+'/sendMessage'; data=urlencode({'chat_id':os.environ['TELEGRAM_CHAT_ID'],'text':'🚀 GitHub Issue Radar test alert! Telegram is working.'}).encode(); req=Request(url,data=data,method='POST'); print(urlopen(req).read().decode())"
-
       - name: Run issue monitor
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
