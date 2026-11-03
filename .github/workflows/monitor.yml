@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   monitor-issues:
@@ -22,16 +22,22 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Restore issue history
-        uses: actions/cache@v4
-        with:
-          path: issues_seen.json
-          key: issue-history-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: |
-            issue-history-
-
       - name: Run issue monitor
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python monitor.py
+
+      - name: Save issue history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -f issues_seen.json
+
+          if git diff --cached --quiet; then
+            echo "Issue history has not changed."
+          else
+            git commit -m "Update monitored issue history"
+            git push
+          fi
