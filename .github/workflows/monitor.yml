@@ -1,0 +1,37 @@
+name: GitHub Issue Radar
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  monitor-issues:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore issue history
+        uses: actions/cache@v4
+        with:
+          path: issues_seen.json
+          key: issue-history-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            issue-history-
+
+      - name: Run issue monitor
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python monitor.py
