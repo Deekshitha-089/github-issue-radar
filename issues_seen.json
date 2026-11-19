@@ -94,5 +94,10 @@
     "openvinotoolkit/openvino#40006",
     "openvinotoolkit/openvino#40031",
     "openvinotoolkit/openvino#40032",
-    "openvinotoolkit/openvino#40035"
+    "openvinotoolkit/openvino#40035",
+    "openvinotoolkit/openvino#40036",
+    "openvinotoolkit/openvino#40057",
+    "openvinotoolkit/openvino#40067",
+    "openvinotoolkit/openvino#40073",
+    "openvinotoolkit/openvino#40075"
 ]
